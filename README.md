@@ -74,7 +74,7 @@ stay consistent — rather than hand-editing the generated JSON.
 
 ## Navigation structure
 
-The 27 guide sections + appendices are grouped into 13 categories in the
+The 27 guide sections + Appendix A are grouped into 12 categories in the
 left sidebar, weighted toward how CS actually works — in-travel and
 service-recovery first, rather than mirroring the doc's section order:
 
@@ -89,8 +89,12 @@ service-recovery first, rather than mirroring the doc's section order:
 9. CAD, Manual Components & Groups
 10. Escalation, Supplier Contact & Handoff
 11. Documentation & Remarks
-12. Quick Reference & Routing
-13. About This Guide
+12. Quick Reference & Routing (incl. Appendix A — Current Routing Directory)
+
+Appendix B (Source Set & Traceability) and Appendix C (Maintenance /
+Validation Register) were dropped from the live site — they're
+document-provenance and build-maintenance notes for whoever maintains the
+guide, not something a CS agent needs while working a case.
 
 ## What's new — and one honest gap worth knowing about
 

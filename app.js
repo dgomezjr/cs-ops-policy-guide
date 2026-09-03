@@ -462,44 +462,67 @@
   sidebarBackdrop.addEventListener('click', closeSidebarMobile);
 
   // ---------------------------------------------------------------
-  // 6. Copy-link buttons
+  // 6. Copy-to-clipboard (policy links + inline emails/URLs)
   // ---------------------------------------------------------------
+  // navigator.clipboard requires a secure/top-level context and can be
+  // silently unavailable inside a sandboxed SharePoint iframe embed, so
+  // this always falls back to a hidden-textarea + execCommand copy and
+  // only flags "Copied!" once a copy actually succeeded.
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(() => legacyCopy(text));
+    }
+    return legacyCopy(text);
+  }
+
+  function legacyCopy(text) {
+    return new Promise((resolve, reject) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.top = '0';
+      ta.style.left = '0';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('copy failed'));
+    });
+  }
+
+  function flashCopied(btn) {
+    btn.classList.add('copied');
+    const prev = btn.getAttribute('title');
+    btn.setAttribute('title', 'Copied!');
+    setTimeout(() => { btn.classList.remove('copied'); btn.setAttribute('title', prev); }, 1500);
+  }
+
   docBody.addEventListener('click', e => {
     const btn = e.target.closest('.copy-link-btn');
     if (!btn) return;
-    const id = btn.dataset.copyId;
-    const url = location.origin + location.pathname + '#' + id;
-    const done = () => {
-      btn.classList.add('copied');
-      const prev = btn.getAttribute('title');
-      btn.setAttribute('title', 'Copied!');
-      setTimeout(() => { btn.classList.remove('copied'); btn.setAttribute('title', prev); }, 1500);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(done).catch(done);
-    } else {
-      done();
-    }
+    const url = location.origin + location.pathname + '#' + btn.dataset.copyId;
+    copyToClipboard(url).then(() => flashCopied(btn)).catch(() => {});
   });
 
-  // ---------------------------------------------------------------
-  // 6b. Inline copy buttons (auto-linked emails, URLs, Smartsheets)
-  // ---------------------------------------------------------------
   docBody.addEventListener('click', e => {
     const btn = e.target.closest('.inline-copy-btn');
     if (!btn) return;
-    const text = btn.dataset.copyText;
-    const done = () => {
-      btn.classList.add('copied');
-      const prev = btn.getAttribute('title');
-      btn.setAttribute('title', 'Copied!');
-      setTimeout(() => { btn.classList.remove('copied'); btn.setAttribute('title', prev); }, 1500);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(done);
-    } else {
-      done();
-    }
+    copyToClipboard(btn.dataset.copyText).then(() => flashCopied(btn)).catch(() => {});
+  });
+
+  // ---------------------------------------------------------------
+  // 6c. In-content cross-reference links (e.g. Quick Task Finder "Go to")
+  // ---------------------------------------------------------------
+  docBody.addEventListener('click', e => {
+    const a = e.target.closest('a.cross-ref, a[href^="#"]');
+    if (!a || !docBody.contains(a)) return;
+    const id = decodeURIComponent(a.getAttribute('href').slice(1));
+    if (!document.getElementById(id)) return;
+    e.preventDefault();
+    goToAnchor(id);
   });
 
   // ---------------------------------------------------------------
