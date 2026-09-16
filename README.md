@@ -30,7 +30,7 @@ trained on one guide already knows how to use the other.
 
 ## Adding screenshots (the main thing you'll do)
 
-Every policy on the site has a "block id" — a stable short id like `17-2`
+Every policy on the site has a "block id" — a stable short id like `15-2`
 or `12-1`. You can see any block's id in the URL bar after you click into
 it (it appears after the `#`).
 
@@ -43,7 +43,7 @@ To add one or more screenshots to a policy:
 
 ```js
 const GUIDE_MEDIA = {
-  "17-2": [
+  "15-2": [
     { file: "images/vcc-step1.png", caption: "Step 1: Open the VCC request in Plex" },
     { file: "images/vcc-step2.png", caption: "Step 2: Confirm the amount matches the hotel invoice" },
     { file: "images/vcc-step3.png", caption: "Step 3: Submit and record the confirmation number" }
@@ -95,6 +95,17 @@ Appendix B (Source Set & Traceability) and Appendix C (Maintenance /
 Validation Register) were dropped from the live site — they're
 document-provenance and build-maintenance notes for whoever maintains the
 guide, not something a CS agent needs while working a case.
+
+Section numbers were renumbered to match this display order, not the
+source doc's original numbering. The doc's original order jumped around
+inside two categories (Plex & Booking Review: 4, then 7; Traveler
+Interaction: 5; Zendesk: 6 — and similarly 14, then 17, then 15, 16 in
+Commission/Goodwill), because categories are grouped by workflow, not by
+the doc's section order. Sections were renumbered so what's on the page
+reads 1, 2, 3… straight down, with no gaps or backtracking. If you're
+updating content from the original .docx, note that its section 5 is now
+6, its 6 is now 7, its 7 is now 5, its 15 is now 16, its 16 is now 17,
+and its 17 is now 15 — everything else is unchanged.
 
 ## What's new — and one honest gap worth knowing about
 

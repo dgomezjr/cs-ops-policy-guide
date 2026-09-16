@@ -17,7 +17,7 @@
 //
 // EXAMPLE (already filled in as a template — delete or edit freely):
 //
-// "17-2": [
+// "15-2": [
 //   { file: "images/vcc-step1-open-request.png", caption: "Step 1: Open the VCC request in Plex" },
 //   { file: "images/vcc-step2-confirm-amount.png", caption: "Step 2: Confirm the amount matches the hotel invoice" },
 //   { file: "images/vcc-step3-submit.png", caption: "Step 3: Submit and record the confirmation number" }
